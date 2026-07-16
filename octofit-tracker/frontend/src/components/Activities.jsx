@@ -9,9 +9,12 @@ function Activities() {
     const fetchData = async () => {
       try {
         const response = await fetch(buildApiUrl('/api/activities/'));
+        if (!response.ok) {
+          throw new Error('Unable to load activities right now.');
+        }
         const data = await response.json();
         setItems(parseApiResponse(data));
-      } catch (err) {
+      } catch (_err) {
         setError('Unable to load activities right now.');
       }
     };

@@ -3,12 +3,20 @@ import { buildApiUrl, parseApiResponse } from '../utils/api';
 
 function Workouts() {
   const [items, setItems] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(buildApiUrl('/api/workouts/'));
-      const data = await response.json();
-      setItems(parseApiResponse(data));
+      try {
+        const response = await fetch(buildApiUrl('/api/workouts/'));
+        if (!response.ok) {
+          throw new Error('Unable to load workouts.');
+        }
+        const data = await response.json();
+        setItems(parseApiResponse(data));
+      } catch (_err) {
+        setError('Unable to load workouts.');
+      }
     };
 
     fetchData();
@@ -17,6 +25,7 @@ function Workouts() {
   return (
     <section className="card shadow-sm p-4">
       <h2 className="h4 mb-3">Workouts</h2>
+      {error ? <p className="text-danger">{error}</p> : null}
       {items.length === 0 ? (
         <p className="text-muted">No workouts available yet.</p>
       ) : (
