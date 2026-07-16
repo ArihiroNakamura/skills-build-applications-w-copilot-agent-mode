@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
-
-const buildApiUrl = (path) => {
-  const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
-  if (codespaceName) {
-    return `https://${codespaceName}-8000.app.github.dev${path}`;
-  }
-  return `http://localhost:8000${path}`;
-};
+import { buildApiUrl, parseApiResponse } from '../utils/api';
 
 function Users() {
   const [items, setItems] = useState([]);
@@ -15,11 +8,7 @@ function Users() {
     const fetchData = async () => {
       const response = await fetch(buildApiUrl('/api/users/'));
       const data = await response.json();
-      if (Array.isArray(data)) {
-        setItems(data);
-      } else if (data && Array.isArray(data.results)) {
-        setItems(data.results);
-      }
+      setItems(parseApiResponse(data));
     };
 
     fetchData();

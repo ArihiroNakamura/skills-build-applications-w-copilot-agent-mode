@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
-
-const buildApiUrl = (path) => {
-  const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
-  if (codespaceName) {
-    return `https://${codespaceName}-8000.app.github.dev${path}`;
-  }
-  return `http://localhost:8000${path}`;
-};
+import { buildApiUrl, parseApiResponse } from '../utils/api';
 
 function Activities() {
   const [items, setItems] = useState([]);
@@ -17,13 +10,7 @@ function Activities() {
       try {
         const response = await fetch(buildApiUrl('/api/activities/'));
         const data = await response.json();
-        if (Array.isArray(data)) {
-          setItems(data);
-        } else if (data && Array.isArray(data.results)) {
-          setItems(data.results);
-        } else {
-          setItems([]);
-        }
+        setItems(parseApiResponse(data));
       } catch (err) {
         setError('Unable to load activities right now.');
       }
