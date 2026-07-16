@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDatabase } from './config/database';
 import { Activity, LeaderboardEntry, Team, User, Workout } from './models';
+import { getApiBaseUrl } from './utils/api';
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ app.use(express.json());
 const createApiResponse = (items: unknown[]) => ({ results: items });
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'ok', baseUrl: getApiBaseUrl() });
 });
 
 app.get('/api/activities/', async (_req, res) => {
@@ -50,4 +51,5 @@ app.get('/api/workouts/', async (_req, res) => {
 
 app.listen(port, () => {
   console.log(`OctoFit backend listening on port ${port}`);
+  console.log(`API base URL: ${getApiBaseUrl()}`);
 });

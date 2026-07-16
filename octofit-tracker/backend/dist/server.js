@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const database_1 = require("./config/database");
 const models_1 = require("./models");
+const api_1 = require("./utils/api");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = Number(process.env.PORT || 8000);
@@ -15,7 +16,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const createApiResponse = (items) => ({ results: items });
 app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok' });
+    res.json({ status: 'ok', baseUrl: (0, api_1.getApiBaseUrl)() });
 });
 app.get('/api/activities/', async (_req, res) => {
     await (0, database_1.connectDatabase)();
@@ -44,4 +45,5 @@ app.get('/api/workouts/', async (_req, res) => {
 });
 app.listen(port, () => {
     console.log(`OctoFit backend listening on port ${port}`);
+    console.log(`API base URL: ${(0, api_1.getApiBaseUrl)()}`);
 });
