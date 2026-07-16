@@ -4,10 +4,10 @@ import Leaderboard from './components/Leaderboard';
 import Teams from './components/Teams';
 import Users from './components/Users';
 import Workouts from './components/Workouts';
-import { buildApiUrl } from './utils/api';
-
 function App() {
-  const apiPreview = buildApiUrl('/api/health');
+  const apiPreview = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/health`
+    : 'http://localhost:8000/api/health';
 
   return (
     <BrowserRouter>

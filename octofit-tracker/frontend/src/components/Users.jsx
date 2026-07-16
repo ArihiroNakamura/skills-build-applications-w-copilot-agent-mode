@@ -8,11 +8,10 @@ function Users() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
-        const apiBaseUrl = codespaceName
-          ? `https://${codespaceName}-8000.app.github.dev`
-          : 'http://localhost:8000';
-        const response = await fetch(`${apiBaseUrl}/api/users/`);
+        const apiUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+          : 'http://localhost:8000/api/users/';
+        const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error('Unable to load users.');
         }
