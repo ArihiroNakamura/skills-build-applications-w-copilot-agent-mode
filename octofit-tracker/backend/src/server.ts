@@ -3,9 +3,15 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDatabase } from './config/database';
 import { Activity, LeaderboardEntry, Team, User, Workout } from './models';
-import { getApiBaseUrl } from './utils/api';
 
 dotenv.config();
+
+const getApiBaseUrl = () => {
+  const codespaceName = process.env.CODESPACE_NAME;
+  return codespaceName
+    ? `https://${codespaceName}-8000.app.github.dev`
+    : 'http://localhost:8000';
+};
 
 const app = express();
 const port = Number(process.env.PORT || 8000);
